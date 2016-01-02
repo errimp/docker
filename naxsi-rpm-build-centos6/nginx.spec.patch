@@ -1,0 +1,43 @@
+--- nginx.spec  2016-01-01 08:19:01.870575553 +0000
++++ nginx.spec.new  2016-01-01 08:19:31.375156373 +0000
+@@ -56,7 +56,7 @@
+ 
+ # end of distribution specific definitions
+ 
+-Summary: High performance web server
++Summary: High performance web server with naxsi module
+ Name: nginx
+ Version: 1.8.0
+ Release: 1%{?dist}.ngx
+@@ -74,6 +74,7 @@
+ Source8: nginx.service
+ Source9: nginx.upgrade.sh
+ Source10: nginx.suse.logrotate
++Source11: 0.54.tar.gz
+ 
+ License: 2-clause BSD-like license
+ 
+@@ -100,6 +101,7 @@
+ 
+ %prep
+ %setup -q
++%setup -T -D -a 11
+ 
+ %build
+ ./configure \
+@@ -137,6 +139,7 @@
+         --with-debug \
+         %{?with_spdy:--with-http_spdy_module} \
+         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
++        --add-module=%{_builddir}/%{name}-%{version}/naxsi-0.54/naxsi_src
+         $*
+ make %{?_smp_mflags}
+ %{__mv} %{_builddir}/%{name}-%{version}/objs/nginx \
+@@ -175,6 +178,7 @@
+         --with-ipv6 \
+         %{?with_spdy:--with-http_spdy_module} \
+         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
++        --add-module=%{_builddir}/%{name}-%{version}/naxsi-0.54/naxsi_src
+         $*
+ make %{?_smp_mflags}
+
